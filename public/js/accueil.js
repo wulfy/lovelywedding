@@ -21,7 +21,7 @@ function alternate_fade(){
         setTimeout(function(){
             // cache l'image
             $('#background_img').fadeOut('normal',function(){
-                // on passe à l'image suivante (avec boucle modulaire)
+                // on passe Ã  l'image suivante (avec boucle modulaire)
 				$(this).hide();
 				change_background_random();
                 setTimeout(function(){
