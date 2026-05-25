@@ -1,0 +1,23 @@
+@import "fonts/Tangerine.css";
+@import "pages_persos.css";
+
+.response{
+font-family:'TangerineRegular';
+font-size:25px;
+}
+
+#parallax_img{
+left:-1000px;
+top:1200px;
+width:300px;
+position:absolute;
+z-index:9999;
+}
+/*
+.suite{
+background: url("../img/cupcake_mini.png") no-repeat scroll 100% 0 transparent
+}*/
+
+.suite span{
+ background: url("../img/cupcake_b.png") no-repeat scroll 100% 0 transparent;
+ }

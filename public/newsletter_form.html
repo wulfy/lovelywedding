@@ -1,0 +1,88 @@
+<html>
+	<head>
+	<title>Newsletter</title>
+	<style>
+	#message{
+		width:100%;
+		margin-top:80px;
+	}
+	#newslettercontainer{
+				background:url("img/mail_sepia.png") no-repeat 0 0;
+				width:240px;
+				height:250px;
+				text-align:center;
+				padding-top:30px;
+	}
+	</style>
+	<div id='newslettercontainer'>
+	<form id='newsletterForm' METHOD="POST" action="javascript:registerNewsletter()" enctype="multipart/form-data">
+		<input id='email' name='email' type='email' value='Entrez votre email'/>
+		<br><br><input type="submit" value="s'inscrire"/>
+		<div id='message'></div>
+	</form>
+	</div>
+<script src="js/jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+var enable_delete_click = true;
+$("#email").click(
+	function() {
+		if(enable_delete_click)
+		{
+			$(this).val("");
+			enable_delete_click = false;
+		}
+	}
+);
+
+function colorizedErrorFields(fields){
+	for (var i in fields)
+	{
+	  $("#"+fields[i]+"").css("border",'1px solid red');
+	}
+}
+
+function registerNewsletter(){
+$.post("register_newsletter.php", $("#newsletterForm").serialize(), 
+	function(data)
+	{
+		obj = $.parseJSON(data);
+		if(obj.error)
+			$("#message").css("color","red");
+		else
+			$("#message").css("color","green");
+			
+		$("#message").html(obj.message);
+		
+	}
+).error(function() { alert("Erreur lors de l'envoi, veuillez reessayer ou nous contacter: contact@lovelywedding.fr")});
+}
+</script>
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.lovelywedding.fr/" : "http://piwik.lovelywedding.fr/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.lovelywedding.fr/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+<!-- GA -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36817805-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- End GA -->
+	</body>
+</html>

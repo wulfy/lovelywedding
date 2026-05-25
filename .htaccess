@@ -1,0 +1,23 @@
+# Modernized root .htaccess.
+# The previous legacy file (UA-based mobile redirect + /v2/ prefix) is preserved as .htaccess.legacy.
+# In Docker/production the DocumentRoot should point at public/ directly; this fallback
+# rewrite to public/ exists for shared-hosting setups where DocumentRoot can't be changed.
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
+
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(?i)\.(env|env\..*|sql|md|log|bak|backup|old|orig|swp|tmp|sh|lock|dist|h\.php|inc|tpl|twig|yml|yaml|ini)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(composer\.(json|lock)|package\.json|package-lock\.json|yarn\.lock|\.htaccess.*)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes

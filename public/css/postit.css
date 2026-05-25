@@ -1,0 +1,53 @@
+.postit{
+	/*box-shadow: 0 0 10px #000000;
+    font-size: 20px;
+    height: 400px;
+    margin-left: -1500px;
+    position: absolute;
+    top: 370px;
+    width:600px;
+    z-index: 300;
+	background: url("../img/ruban_dore_tiny.png") no-repeat scroll 100% 100% white;*/
+	
+	background: url("../img/ruban_dore_tiny.png") no-repeat scroll 100% 100% white;
+    box-shadow: 0 0 10px #000000;
+    font-size: 20px;
+    height: 16.5em;
+    position: absolute;
+    top: 50%;
+    width: 30em;
+    z-index: 300;
+	margin-left: -1500px;
+}
+
+.text img{
+/*height:50px;*/
+}
+.text{
+/*font-size:14px;*/
+font-size: 0.7em;
+}
+ 
+.text h1{
+ /*text-align:center;
+ font-size:25px;
+font-family:'MutluOrnamental';
+font-size:40px;
+margin:0;
+padding:0;
+font-weight:lighter;
+ margin-top: -20px;*/
+     font-family: 'MutluOrnamental';
+    font-size: 3em;
+    font-weight: lighter;
+    margin: -12px 0 0;
+    padding: 0;
+    text-align: center;
+}
+ 
+ 
+.text{
+margin:0;
+padding:0;
+height:100%;
+}

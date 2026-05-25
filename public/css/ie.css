@@ -1,0 +1,9 @@
+.selector{
+	background-color: white !important;
+	filter:alpha(opacity=0);
+}
+
+@font-face {
+    font-family: "mariage";
+	src: url('Quickier.eot');
+}

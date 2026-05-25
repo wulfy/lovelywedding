@@ -1,0 +1,124 @@
+body{
+scroll:no;
+overflow:hidden;
+}
+
+.postit{
+    background-color:white;
+	box-shadow: 0 0 10px #000000;
+    font-size: 20px;
+    height: 400px;
+    margin-left: -1500px;
+    padding-top: 20px;
+    position: absolute;
+    top: 380px;
+    width:600px;
+    z-index: 300;
+}
+
+.selected  h3{
+/*height: 30px !important;*/
+}
+
+#elle{
+   /* bottom: -25%;
+    height: 80%;
+    position: absolute;
+    right: 15%;*/
+/*z-index:100;*/
+/*background: url('../img/audrey_nb_t.png') no-repeat scroll 0 0 transparent;*/
+    top: 40%;
+    right: 15%;
+    width: 22%;
+}
+
+.portrait{
+position: absolute;
+margin:0;
+padding:0;
+}
+
+/*.portrait:hover{
+z-index:500;
+}*/
+
+#lui{
+    /*bottom: -25%;
+    height: 80%;
+    position: absolute;
+    left: 15%;*/
+    top: 40%;
+    left: 12%;
+    width: 20%;
+}
+
+#luiselector{
+    top: 40%;
+    left: 15%;
+    width: 15%;
+	height:60%;
+	z-index:250;
+	/*border: 1px solid red;*/
+	position:absolute;
+	min-width:50px;
+}
+
+#lui2{
+    /*bottom: -25%;
+    height: 80%;
+    position: absolute;
+    left: 15%;*/
+	right: 1%;
+    top: 40%;
+   /* left: 15%;*/
+    width: 20%;
+}
+
+
+#contenu{
+	/*margin: 0px auto 0;*/
+	height: 250px;
+}
+
+.text{
+	position: absolute;
+	/*width: 300px;*/
+	width:25%;
+	z-index: 500;
+	/*bottom: 20%;*/
+	display:none;
+	/*top:350px;*/
+	top:35%;
+	margin-top:150px;
+}
+.text img{
+position:absolute;
+/*width:200px;*/
+  width: 40%;
+}
+#text_elle img{
+left:-200px;
+top:20px;
+}
+
+#text_lui img{
+right:-100px;
+top:-50px;
+}
+
+#text_elle{
+   /* right: 35%;*/
+   right: 40%;
+}
+
+#text_lui{
+    left: 35%;
+}
+
+.bg_front{
+width:45%;
+top:50%;
+position:absolute;
+z-index:3;
+left:0;
+}

@@ -1,0 +1,43 @@
+services:
+  web:
+    image: php:8.2-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    working_dir: /var/www/html
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html/public
+    command: >
+      bash -c "
+      docker-php-ext-install pdo_mysql &&
+      a2enmod rewrite headers &&
+      sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
+      apache2-foreground
+      "
+    depends_on:
+      - db
+      - mail
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: lovelywedding
+      MYSQL_USER: app
+      MYSQL_PASSWORD: changeme
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+
+  mail:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  db_data:

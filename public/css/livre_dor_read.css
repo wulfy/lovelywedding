@@ -1,0 +1,100 @@
+@import "livre_dor.css";
+
+
+#loadingLivre{
+    background: none repeat scroll 0 0 transparent;
+    position: absolute;
+    right: 150px;
+    text-align: center;
+    top: 200px;
+	z-index:999;
+	display:none;
+}
+
+#mybook{
+display:none;
+}
+
+h3{
+margin: 10px;
+}
+
+.form_livre h1 {
+    font-size: 3em;
+    text-align: center;
+}
+
+.form_livre{
+	padding-top:25px;
+	padding-left: 7px;
+}
+
+.date{
+position:absolute;
+right:20px;
+top:0;
+}
+
+.page{
+position:relative;
+height:500px;
+}
+
+.write{
+position:absolute;
+top:-10px;
+right:50px;
+}
+
+.writeUs{
+margin:20px 0 0;
+text-align:center;
+}
+
+.plume{
+margin:0;
+padding:0;
+height:50px;
+}
+
+.intro{
+padding-top:120px;
+text-align:center;
+}
+
+.firstLetter{
+    float: left;
+    font-size: 5em;
+    margin-bottom: -35px;
+    margin-right: 35px;
+	text-transform:uppercase;
+}
+
+.marquepage{
+ background: url("/img/marque_page.png") no-repeat scroll center bottom transparent;
+    height: 40px;
+    left: 900px;
+    position: absolute;
+    top: 805px;
+    z-index: 999;
+}
+#pagenumber{
+	margin-left:33px;
+	text-align:center;
+}
+
+.marque_text{
+	margin:10px auto;
+	text-align:center;
+}
+
+.marque_text span{
+	font-size:0.5em;
+}
+.editLink{
+    bottom: 0;
+    font-size: 0.7em;
+    font-style: italic;
+    position: absolute;
+    right: 0;
+}

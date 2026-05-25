@@ -1,0 +1,42 @@
+@import "pages_persos.css";
+
+.response{
+font-size:15px;
+}
+
+.section{
+	height:1300px;
+}
+
+#section1{
+background:url("../img/sport.jpg") no-repeat fixed 0 0 transparent;
+/*background:url("http://www.ianlunn.co.uk/plugins/jquery-parallax/images/firstBG.jpg")  no-repeat fixed 50% 0 transparent;*/
+}
+
+#section2{
+background:url("../img/running_big.jpg") no-repeat fixed 0 0 transparent;
+/*background:url("http://www.ianlunn.co.uk/plugins/jquery-parallax/images/secondBG.jpg") no-repeat fixed 50% 0 transparent;*/
+}
+
+#intersection{
+background:url("../img/wedding_equilibre.jpg") no-repeat fixed 50% 0 transparent;
+height:300px;
+background-color:#d9e0d9;
+z-index:500;
+/*background:url("http://www.ianlunn.co.uk/plugins/jquery-parallax/images/secondBG.jpg") no-repeat fixed 50% 0 transparent;*/
+}
+
+/*.suite{
+	background: url("../img/rugby_mini.png") no-repeat scroll 100% 0 transparent;
+}*/
+
+.suite span{
+ background: url("../img/foot.png") no-repeat scroll 100% 0 transparent;
+/*
+.sous_section{
+position:absolute;
+top:50%;
+}*/
+
+
+

@@ -1,0 +1,37 @@
+
+.text{
+    background: none no-repeat scroll 0 0 rgba(224, 205, 169, 0.5);
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#4cffffff', endColorstr='#4cffffff');
+    font-family: garamond;
+    font-size: 25px;
+	font-weight:bold;
+    height: 275px;
+    margin-left: 65px;
+    margin-top: 45px;
+    width: 220px;
+	text-align:center;
+	color:grey;
+}
+
+.feuille{	
+	background: url("../img/cadre1.png") no-repeat scroll 0 0 transparent;
+    font-size: 20px;
+    height: 400px;
+    margin-left: 320px;
+    padding-top: 20px;
+    position: absolute;
+    top: 38%;
+    width: 600px;
+    z-index: 300;
+}
+
+#countdown{
+    top: 180px;
+    position: absolute;
+	width:220px;
+}
+
+body{
+overflow: hidden;
+}
+

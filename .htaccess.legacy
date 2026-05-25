@@ -1,0 +1,50 @@
+RewriteEngine on
+RewriteCond %{HTTP_USER_AGENT} Windows\ CE [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} BlackBerry [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Htc [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Lg [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Sony [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} NetFront [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Opera\ Mini [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Palm\ OS [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Blazer [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Elaine [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^WAP.*$ [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Plucker [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Nokia [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Samsung [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Sec- [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} iPhone [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} iPad [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} AvantGo [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} Android [NC]
+#RewriteCond %{HTTP_USER_AGENT} "android|blackberry|ipad|iphone|ipod|iemobile|opera mobile|palmos|webos|googlebot-mobile" [NC]
+RewriteCond %{REQUEST_URI} !^/v2/mobile/.*$
+RewriteCond %{REQUEST_URI} !^/v2/mobile/$
+RewriteCond %{HTTP_HOST} !^mobile.lovelywedding.fr$
+RewriteCond %{REQUEST_URI} !^/v2/libs/.*$
+RewriteCond %{HTTP_HOST} !piwik.lovelywedding.fr
+RewriteCond %{REQUEST_URI} !^/newsletter/.*$
+RewriteRule ^(.*)$ http://mobile.lovelywedding.fr/$1 [L,R=301]
+
+#RewriteCond %{REQUEST_URI} !^/under_construction/bride_groom_under_construction\.gif$
+#RewriteCond %{REQUEST_URI} !^/under_construction/data/(.*)$
+#RewriteCond %{REQUEST_URI} !^/v2/mobile/(.*)$
+#RewriteRule !^under_construction/index\.html$ /under_construction/index.html [L,R=301]
+
+RewriteCond %{REQUEST_URI} !^/v2/mobile/.*$
+RewriteCond %{HTTP_HOST} !^mobile.lovelywedding.fr$
+RewriteCond %{REQUEST_URI} !^/newsletter/.*$
+RewriteCond %{REQUEST_URI} !^/v2
+RewriteCond %{HTTP_HOST} !piwik.lovelywedding.fr 
+RewriteRule ^(.*)$ /v2/$1
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.xml -f
+RewriteRule ^(.*)$ $1.xml
+#RewriteCond $1.html !-f
+#RewriteRule ^(.*).html$ $1.php

@@ -1,0 +1,9 @@
+/vendor/
+/.env
+/var/cache/*
+/var/log/*
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+/.php-cs-fixer.cache
+/.phpunit.cache
+/.phpunit.result.cache

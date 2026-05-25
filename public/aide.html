@@ -1,0 +1,167 @@
+<html>
+	<head>
+	<title>Aide livre d'or</title>
+	<style id="bsa_css" type="text/css">
+		.section {
+			
+			float: left;
+			height: 100%;
+			margin: 0;
+			/*text-shadow: 1px 1px 2px #F0F0F0;*/
+			width: 1000px;
+			poition:relative;
+		}
+		body{
+			width:6000px;
+		}
+		
+		.nav{
+			margin: 10px auto;
+			list-style-image: none;
+			list-style-type: none;
+			width:300px;
+		}
+		
+		.nav li{
+			float:left;
+			margin-right:100px;
+		}
+		
+		.nav  img{
+			height:50px;
+		}
+		
+		.visuel img{
+		height:100%;
+		}
+		
+		.section h2{
+			position:absolute;
+			/*top:320px;*/
+			height:120px;
+			margin:0;
+			padding:0;
+			padding-left:50px;
+			background:none repeat scroll 0 0 rgba(12, 25, 45, 0.5);
+			color:white;
+			width:500px;
+			bottom: 80px;
+		}
+		
+		.visuel{
+		width:900px;
+		height:400px;
+		margin:0 auto;
+		}
+	</style>
+	</head>
+	<body>
+		<div class="section" id="section1">
+			<div class='visuel'>
+				<h2>1) Ouvrir le moteur de recherche <a href='www.google.fr' target='_blank'>google</a></h2>
+				<img src="img/tutorial_1.png"/>
+			</div>
+			<ul class="nav">
+				<li><a href="#section2"><img src='img/next.jpg' class='icon'/></a></li>
+			</ul>
+		</div>
+		<div class="section" id="section2">
+			<div class='visuel'>
+			<h2>2) Tappez une description du type d'image que vous voulez (exemple : "Lapin")</h2>
+			<<img src="img/tutorial_2.png"/>
+			</div>
+			<ul class="nav">
+				<li><a href="#section1"><img src='img/prev.jpg' class='icon'/></a></li>
+				<li><a href="#section3"><img src='img/next.jpg' class='icon'/></a></li>
+			</ul>
+		</div>
+		<div class="section" id="section3">
+		<div class='visuel'>
+			<h2>3) Cliquez sur le menu "image" (en haut de la barre d'outil de google)</h2>
+			<img src="img/tutorial_3.png"/>
+		</div>
+			<ul class="nav">
+				<li><a href="#section2"><img src='img/prev.jpg' class='icon'/></a></li>
+				<li><a href="#section4"><img src='img/next.jpg' class='icon'/></a></li>
+			</ul>
+		</div>
+		
+		<div class="section" id="section4">
+		<div class='visuel'>
+			<h2>4) Parcourez la liste d'image. une fois l'image désirée trouvée, cliquez avec le bouton droit de la souris dessus et choisissez : "copier l'adresse de l image"</h2>
+			<img src="img/tutorial_4.png"/>
+		</div>
+			<ul class="nav">
+				<li><a href="#section3"><img src='img/prev.jpg' class='icon'/></a></li>
+				<li><a href="#section5"><img src='img/next.jpg' class='icon'/></a></li>
+			</ul>
+		</div>
+		
+		<div class="section" id="section5">
+		<div class='visuel'>
+			<h2>5) Afficher la page du livre d'or et "coller" l'adresse de l'image (bouton droit dans la zone de texte et sélectionner "coller")</h2>
+			<img src="img/tutorial_5.png"/>
+		</div>
+			<ul class="nav">
+				<li><a href="#section4"><img src='img/prev.jpg' class='icon'/></a></li>
+				<li><a href="#section6"><img src='img/next.jpg' class='icon'/></a></li>
+			</ul>
+		</div>
+		<div class="section" id="section6">
+		<div class='visuel'>
+			<h2>6) Cliquer ur le boutont "tester" pour vérifier le rendu de l'image</h2>
+			<img src="img/tutorial_6.png"/>
+		</div>
+			<ul class="nav">
+				<li><a href="#section5"><img src='img/prev.jpg' class='icon'/></a></li>
+				<li><a href="#section1"><img src='img/restart.png' class='icon'/></a></li>
+			</ul>
+		</div>
+		<!-- The JavaScript -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>	
+		<script type="text/javascript">
+            $(function() {
+                $('ul.nav a').bind('click',function(event){
+                    var $anchor = $(this);
+                    /*
+                    if you want to use one of the easing effects:
+                    $('html, body').stop().animate({
+                        scrollLeft: $($anchor.attr('href')).offset().left
+                    }, 1500,'easeInOutExpo');
+                     */
+                    $('html, body').stop().animate({
+                        scrollLeft: $($anchor.attr('href')).offset().left
+                    }, 1000);
+                    event.preventDefault();
+                });
+            });
+        </script>
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.lovelywedding.fr/" : "http://piwik.lovelywedding.fr/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.lovelywedding.fr/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+<!-- GA --->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36817805-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- end GA -->
+	</body>
+</html>

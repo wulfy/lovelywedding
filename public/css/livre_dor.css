@@ -1,0 +1,32 @@
+@import "pages_persos.css";
+@import "fonts/Tangerine.css";
+
+.form_livre{
+    position: absolute;
+    top: 230px;
+    z-index: 200;
+	margin-left:100px;
+	background:url("../img/livre_form.png") no-repeat scroll 0 0 transparent;
+	width:800px;
+	height:600px;
+}
+
+.message{
+font-family:'TangerineRegular';
+font-size:25px;
+margin: 10px auto;
+width: 300px;
+}
+
+.message img{
+max-height:400px;
+}
+
+.prenom{
+display:none;
+}
+
+#error{
+display:none;
+color:red;
+}

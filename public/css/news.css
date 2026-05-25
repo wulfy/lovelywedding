@@ -1,0 +1,139 @@
+@import "fonts/pacifico.css"; 
+@import "fonts/windsong.css"; 
+
+.halfwidth{
+width:40%;
+}
+
+.register_icon{
+width:40px;
+}
+
+.register_news_line{
+min-height:100px;
+}
+
+.news_list{
+    height: 100%;
+    position: absolute;
+    top: 230px;
+    width: 970px;
+    z-index: 100;
+}
+
+.item_list{
+padding:0px;
+padding-right:20px;
+}
+
+#contenu{
+height:9500px;
+}
+
+.inline{
+float:left;
+ margin-bottom: 200px;
+
+}
+
+ul{
+list-style-type: none;
+}
+
+li .item{
+clear:both;
+height:210px;
+padding-top:20px;
+}
+
+li .item:nth-of-type(odd){
+background-color:#cccccc;
+}
+
+li .item .ss_item{
+    float: left;
+    position: relative;
+    top: 50%;
+    width: 50%;
+}
+
+.news_list li{
+clear:both;
+position:relative;
+}
+
+.news_list .titre_news{
+background:url("../img/weddingsheaderbox.png") no-repeat 0 0;
+   height: 80px;
+    padding-left: 120px;
+    padding-top: 40px;
+    position: absolute;
+    top: -50px;
+    width: 600px;
+	font-family:pacificoRegular;
+	font-size:1.5em;
+	z-index:100;
+}
+
+.calendar{
+background:url("../img/calendar.png") no-repeat 0 0;
+width:50px;
+height:50px;
+position:absolute;
+right:55px;
+top:5px;
+z-index:100;
+padding-top:20px;
+padding-left:10px;
+}
+
+.detail_news{
+ height:auto;
+ background-color:white;
+ margin-left:20px;
+ padding-top:80px;
+ padding-left:20px;
+ width:870px;
+ position:relative;
+}
+
+.visuel{
+margin-bottom:20px;
+}
+
+.visuel img{
+max-width:100%;
+}
+
+p{
+width:55%;
+word-wrap: break-word;
+float:left;
+padding-bottom:30px;
+}
+
+.signature{
+position:absolute;
+bottom:0;
+float:left;
+height:35px;
+width:200px;
+font-family:windsongRegular;
+font-size:2em;
+}
+
+#menu_items
+{
+	position:fixed;
+}
+#header{
+	position:fixed;
+}
+/*
+.all{
+background:url("http://www.mediawales.co.uk/_files/images//jun_10/mw__1276511479_News_Image.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}*/

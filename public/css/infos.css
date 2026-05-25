@@ -1,0 +1,66 @@
+.selected  h3{
+/*height: 30px !important;*/
+}
+
+.list {
+	margin-left:100px;
+	margin-top:30px;
+	position:relative;
+}
+
+.list img{
+	position:absolute;
+}
+
+.list tr{
+	height:50px;
+}
+
+.list td{
+    padding-left: 30px;
+}
+
+.last{
+	margin-left:50px;
+	float:right;
+}
+
+.contacts img, .map img{
+height:50px;
+vertical-align:middle;
+}
+
+.items{
+	margin:50px auto;
+	width:500px;
+	height:200px;
+}
+
+.item{
+	display: inline-block;
+    position: relative;
+    text-align: center;
+	width:150px;
+	height:110px;
+}
+
+.item img{
+	/*vertical-align:bottom;*/
+	width:100px;
+	position:absolute;
+	left:15%;
+}
+
+.colored{
+	display:none;
+}
+
+.description{
+    margin: 0 auto;
+    position: relative;
+    top: 100px;
+}
+.mail{
+position:relative;
+bottom:0px;
+}

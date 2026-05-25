@@ -1,0 +1,41 @@
+RewriteEngine On
+
+# Front controller: requests that don't match a real file/dir go through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Block dotfiles
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Block sensitive extensions / filenames
+<FilesMatch "(?i)\.(env|env\..*|sql|md|log|bak|backup|old|orig|swp|tmp|sh|lock|dist|h\.php|inc|tpl|twig|yml|yaml|ini)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(composer\.(json|lock)|package\.json|package-lock\.json|yarn\.lock|\.htaccess.*)$">
+    Require all denied
+</FilesMatch>
+
+Options -Indexes -MultiViews
+ServerSignature Off
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://www.google-analytics.com https://ssl.google-analytics.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    Header always set Cross-Origin-Resource-Policy "same-origin"
+    Header unset X-Powered-By
+</IfModule>
+
+# Disable PHP execution in /uploads
+<Directory "uploads">
+    <FilesMatch "\.(php|phtml|php3|php4|php5|php7|php8|pht|phar)$">
+        Require all denied
+    </FilesMatch>
+    php_flag engine off
+</Directory>

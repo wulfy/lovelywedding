@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Dotenv\Dotenv;
+use LovelyWedding\Repository\NewsletterRepository;
+use LovelyWedding\Service\Database;
+use LovelyWedding\Service\Mailer;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
+$projectDir = dirname(__DIR__);
+require $projectDir . '/vendor/autoload.php';
+
+if (is_file($projectDir . '/.env')) {
+    Dotenv::createImmutable($projectDir)->safeLoad();
+}
+
+$options = getopt('', ['campaign:', 'dry-run', 'subject::']);
+$campaign = isset($options['campaign']) && is_string($options['campaign']) ? $options['campaign'] : 'default';
+$dryRun = array_key_exists('dry-run', $options);
+$subject = isset($options['subject']) && is_string($options['subject'])
+    ? $options['subject']
+    : '[Lovelywedding] Newsletter';
+
+$templateFile = sprintf('%s/templates/newsletter/%s.html', $projectDir, $campaign);
+if (!is_file($templateFile)) {
+    fwrite(STDERR, sprintf("Campagne introuvable: %s\n", $templateFile));
+    exit(1);
+}
+$body = (string) file_get_contents($templateFile);
+
+$logger = new Logger('newsletter');
+$logger->pushHandler(new StreamHandler('php://stdout'));
+$logger->pushHandler(new StreamHandler($projectDir . '/var/log/newsletter.log'));
+
+$database = new Database(
+    host: (string) ($_ENV['DB_HOST'] ?? 'localhost'),
+    port: (int) ($_ENV['DB_PORT'] ?? 3306),
+    name: (string) ($_ENV['DB_NAME'] ?? 'lovelywedding'),
+    user: (string) ($_ENV['DB_USER'] ?? 'root'),
+    pass: (string) ($_ENV['DB_PASS'] ?? ''),
+);
+$repo = new NewsletterRepository($database);
+$mailer = new Mailer((string) ($_ENV['MAILER_DSN'] ?? 'null://null'));
+$from = (string) ($_ENV['NEWSLETTER_FROM'] ?? 'noreply@localhost');
+
+$emails = $repo->findAllActive();
+$logger->info(sprintf('Campagne "%s" — %d destinataires (dry-run=%s)', $campaign, count($emails), $dryRun ? 'oui' : 'non'));
+
+$sent = 0;
+$failed = 0;
+foreach ($emails as $email) {
+    if ($dryRun) {
+        $logger->info(sprintf('[DRY-RUN] %s', $email));
+        $sent++;
+        continue;
+    }
+    try {
+        $mailer->send($from, $email, $subject, $body, true);
+        $logger->info(sprintf('Envoyé à %s', $email));
+        $sent++;
+    } catch (\Throwable $e) {
+        $logger->error(sprintf('Échec %s: %s', $email, $e->getMessage()));
+        $failed++;
+    }
+    // throttle to avoid being flagged as spam by the SMTP relay
+    usleep(250_000);
+}
+
+$logger->info(sprintf('Terminé: %d envoyés, %d échecs', $sent, $failed));
+exit($failed > 0 ? 2 : 0);
