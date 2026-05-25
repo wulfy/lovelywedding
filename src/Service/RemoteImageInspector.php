@@ -6,9 +6,9 @@ namespace LovelyWedding\Service;
 
 final class RemoteImageInspector
 {
-    private const int CONNECT_TIMEOUT = 5;
-    private const int TIMEOUT = 10;
-    private const int MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+    private const CONNECT_TIMEOUT = 5;
+    private const TIMEOUT = 10;
+    private const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
     /**
      * Returns ['status' => int, 'length' => int, 'content_type' => string] or null on failure / SSRF block.

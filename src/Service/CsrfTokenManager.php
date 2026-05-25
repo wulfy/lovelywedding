@@ -6,7 +6,7 @@ namespace LovelyWedding\Service;
 
 final class CsrfTokenManager
 {
-    private const string SESSION_KEY = '_csrf_tokens';
+    private const SESSION_KEY = '_csrf_tokens';
 
     public function token(string $intent = 'default'): string
     {
