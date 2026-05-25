@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LovelyWedding\Repository;
 
 use LovelyWedding\Service\Database;
-use PDO;
 
 final class GuestBookRepository
 {
@@ -39,13 +38,13 @@ final class GuestBookRepository
             'SELECT id, nom, email, ville, date, message, image, ip
              FROM livre_dor WHERE id = :id AND ip = :ip LIMIT 1'
         );
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':ip', $ip, \PDO::PARAM_STR);
         $stmt->execute();
         /** @var array<string, mixed>|false $row */
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return false === $row ? null : $row;
     }
 
     public function existsByIp(string $ip): bool
@@ -53,10 +52,10 @@ final class GuestBookRepository
         $stmt = $this->db->pdo()->prepare(
             'SELECT 1 FROM livre_dor WHERE ip = :ip AND actif = 1 LIMIT 1'
         );
-        $stmt->bindValue(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindValue(':ip', $ip, \PDO::PARAM_STR);
         $stmt->execute();
 
-        return $stmt->fetchColumn() !== false;
+        return false !== $stmt->fetchColumn();
     }
 
     /**
@@ -95,7 +94,7 @@ final class GuestBookRepository
         $stmt->bindValue(':ville', $data['ville']);
         $stmt->bindValue(':message', $data['message']);
         $stmt->bindValue(':image', $data['image']);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->bindValue(':ip', $data['ip']);
         $stmt->execute();
     }

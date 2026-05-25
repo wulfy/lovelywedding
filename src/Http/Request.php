@@ -32,7 +32,7 @@ final class Request
     {
         $uri = (string) ($this->server['REQUEST_URI'] ?? '/');
         $path = parse_url($uri, PHP_URL_PATH);
-        if (!is_string($path) || $path === '') {
+        if (!is_string($path) || '' === $path) {
             return '/';
         }
 
@@ -57,11 +57,11 @@ final class Request
     {
         $ip = (string) ($this->server['REMOTE_ADDR'] ?? '0.0.0.0');
 
-        return $ip === '' ? '0.0.0.0' : $ip;
+        return '' === $ip ? '0.0.0.0' : $ip;
     }
 
     public function isAjax(): bool
     {
-        return strtolower((string) ($this->server['HTTP_X_REQUESTED_WITH'] ?? '')) === 'xmlhttprequest';
+        return 'xmlhttprequest' === strtolower((string) ($this->server['HTTP_X_REQUESTED_WITH'] ?? ''));
     }
 }

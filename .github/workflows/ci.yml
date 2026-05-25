@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main, coolify-deploy]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    name: PHP ${{ matrix.php }} - tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: pdo, pdo_mysql, curl, mbstring, json
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-php${{ matrix.php }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: PHPUnit
+        run: composer test
+
+      - name: PHPStan
+        run: composer phpstan
+
+      - name: PHP-CS-Fixer (dry-run)
+        run: composer cs-check
+
+  encoding-check:
+    name: UTF-8 encoding check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify all source files are valid UTF-8
+        run: |
+          set -e
+          bad=$(find public/ src/ templates/ config/ bin/ tests/ sql/ \
+                  -type f \
+                  \( -name "*.php" -o -name "*.js" -o -name "*.css" \
+                     -o -name "*.html" -o -name "*.xml" -o -name "*.tpl" \
+                     -o -name "*.sql" -o -name "*.md" -o -name "*.json" \) \
+                  -exec sh -c 'iconv -f UTF-8 -t UTF-8 "$1" > /dev/null 2>&1 || echo "$1"' _ {} \;)
+          if [ -n "$bad" ]; then
+            echo "::error::Files not valid UTF-8 (will break nixpacks/Coolify):"
+            echo "$bad"
+            exit 1
+          fi
+          echo "All source files are valid UTF-8."

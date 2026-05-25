@@ -41,10 +41,10 @@ final class Kernel
     public function handle(Request $request): Response
     {
         /** @var array<string, array{0: class-string, 1: string}> $routes */
-        $routes = require $this->projectDir . '/config/routes.php';
+        $routes = require $this->projectDir.'/config/routes.php';
         $router = new Router($routes);
         $match = $router->match($request->path());
-        if ($match === null) {
+        if (null === $match) {
             return new Response('Not Found', 404, ['Content-Type' => 'text/plain; charset=utf-8']);
         }
 
@@ -59,7 +59,7 @@ final class Kernel
 
     private function boot(): void
     {
-        $envFile = $this->projectDir . '/.env';
+        $envFile = $this->projectDir.'/.env';
         if (is_file($envFile)) {
             Dotenv::createImmutable($this->projectDir)->safeLoad();
         }
@@ -68,11 +68,11 @@ final class Kernel
         $debug = filter_var($_ENV['APP_DEBUG'] ?? false, FILTER_VALIDATE_BOOL);
 
         error_reporting(E_ALL);
-        ini_set('display_errors', ($env !== 'prod' && $debug) ? '1' : '0');
+        ini_set('display_errors', ('prod' !== $env && $debug) ? '1' : '0');
         ini_set('log_errors', '1');
 
         $this->logger = new Logger('app');
-        $this->logger->pushHandler(new RotatingFileHandler($this->projectDir . '/var/log/app.log', 14, Logger::DEBUG));
+        $this->logger->pushHandler(new RotatingFileHandler($this->projectDir.'/var/log/app.log', 14, Logger::DEBUG));
 
         $this->database = new Database(
             host: (string) ($_ENV['DB_HOST'] ?? 'localhost'),
@@ -84,8 +84,8 @@ final class Kernel
 
         $this->mailer = new Mailer((string) ($_ENV['MAILER_DSN'] ?? 'null://null'));
         $this->renderer = new SmartyRenderer(
-            $this->projectDir . '/templates',
-            $this->projectDir . '/var/cache/smarty',
+            $this->projectDir.'/templates',
+            $this->projectDir.'/var/cache/smarty',
         );
         $this->csrf = new CsrfTokenManager();
         $this->imageInspector = new RemoteImageInspector();

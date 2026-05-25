@@ -37,13 +37,13 @@ final class GuestBookController
         $ip = $request->clientIp();
         $previous = null;
         $idParam = $request->get('id');
-        if ($idParam !== null && ctype_digit($idParam)) {
+        if (null !== $idParam && ctype_digit($idParam)) {
             $previous = $this->repo->findByIpAndId($ip, (int) $idParam);
         }
 
         return Response::html($this->renderer->render('guestbook/form.tpl', [
             'last_post_values' => $previous,
-            'csrf_token'       => $this->csrf->token(self::CSRF_INTENT),
+            'csrf_token' => $this->csrf->token(self::CSRF_INTENT),
         ]));
     }
 
@@ -63,7 +63,7 @@ final class GuestBookController
 
     public function write(Request $request): Response
     {
-        if ($request->method() !== 'POST') {
+        if ('POST' !== $request->method()) {
             return new Response('Method Not Allowed', 405);
         }
 
@@ -71,46 +71,46 @@ final class GuestBookController
             $this->logger->warning('CSRF rejected on guestbook write', ['ip' => $request->clientIp()]);
 
             return Response::html($this->renderer->render('guestbook/error.tpl', [
-                'errors'     => ['Jeton de sécurité invalide. Rechargez la page.'],
+                'errors' => ['Jeton de sécurité invalide. Rechargez la page.'],
                 'jsonFields' => json_encode([]),
             ]), 400);
         }
 
         $input = [
-            'nom'     => $request->post('nom'),
-            'prenom'  => $request->post('prenom'),
-            'email'   => $request->post('email'),
-            'ville'   => $request->post('ville'),
+            'nom' => $request->post('nom'),
+            'prenom' => $request->post('prenom'),
+            'email' => $request->post('email'),
+            'ville' => $request->post('ville'),
             'message' => $request->post('message'),
-            'image'   => $request->post('image'),
+            'image' => $request->post('image'),
         ];
 
         $validator = new GuestBookValidator();
         if (!$validator->validate($input)) {
             return Response::html($this->renderer->render('guestbook/error.tpl', [
-                'errors'     => array_values($validator->errors()),
+                'errors' => array_values($validator->errors()),
                 'jsonFields' => json_encode(array_keys($validator->errors())),
             ]));
         }
 
         $image = trim((string) $input['image']);
-        if ($image !== '') {
+        if ('' !== $image) {
             $info = $this->imageInspector->inspect($image);
-            if ($info === null) {
+            if (null === $info) {
                 return Response::html($this->renderer->render('guestbook/error.tpl', [
-                    'errors'     => ["URL d'image refusée (inaccessible ou hôte interdit)."],
+                    'errors' => ["URL d'image refusée (inaccessible ou hôte interdit)."],
                     'jsonFields' => json_encode(['image']),
                 ]));
             }
             if ($info['length'] > self::MAX_IMAGE_BYTES) {
                 return Response::html($this->renderer->render('guestbook/error.tpl', [
-                    'errors'     => ['Image trop volumineuse (limite 5 Mo).'],
+                    'errors' => ['Image trop volumineuse (limite 5 Mo).'],
                     'jsonFields' => json_encode(['image']),
                 ]));
             }
             if (!str_starts_with(strtolower($info['content_type']), 'image/')) {
                 return Response::html($this->renderer->render('guestbook/error.tpl', [
-                    'errors'     => ["L'URL ne renvoie pas une image."],
+                    'errors' => ["L'URL ne renvoie pas une image."],
                     'jsonFields' => json_encode(['image']),
                 ]));
             }
@@ -119,20 +119,20 @@ final class GuestBookController
         $ip = $request->clientIp();
         $id = $request->post('id');
         $existing = null;
-        if ($id !== null && ctype_digit($id)) {
+        if (null !== $id && ctype_digit($id)) {
             $existing = $this->repo->findByIpAndId($ip, (int) $id);
         }
 
         $data = [
-            'nom'     => StringSanitizer::removeAccents((string) $input['nom']),
-            'email'   => (string) $input['email'],
-            'ville'   => (string) $input['ville'],
+            'nom' => StringSanitizer::removeAccents((string) $input['nom']),
+            'email' => (string) $input['email'],
+            'ville' => (string) $input['ville'],
             'message' => (string) $input['message'],
-            'image'   => $image === '' ? null : $image,
-            'ip'      => $ip,
+            'image' => '' === $image ? null : $image,
+            'ip' => $ip,
         ];
 
-        if ($existing !== null) {
+        if (null !== $existing) {
             $this->repo->update((int) $existing['id'], $data);
             $update = true;
         } else {

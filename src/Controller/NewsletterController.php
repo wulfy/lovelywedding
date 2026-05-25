@@ -25,7 +25,7 @@ final class NewsletterController
 
     public function subscribe(Request $request): Response
     {
-        if ($request->method() !== 'POST') {
+        if ('POST' !== $request->method()) {
             return Response::json(['status' => 'error', 'message' => 'Méthode non autorisée'], 405);
         }
 
@@ -33,7 +33,7 @@ final class NewsletterController
         // does not embed one. The session-bound token is still available client-side
         // for callers that include it (livre d'or form posts).
         $csrfToken = $request->post('_csrf');
-        if ($csrfToken !== null && !$this->csrf->isValid('newsletter', $csrfToken)) {
+        if (null !== $csrfToken && !$this->csrf->isValid('newsletter', $csrfToken)) {
             return Response::json(['status' => 'error', 'error' => true, 'message' => 'CSRF invalide'], 400);
         }
 
@@ -41,8 +41,8 @@ final class NewsletterController
         $input = ['email' => $request->post('email')];
         if (!$validator->validate($input)) {
             return Response::json([
-                'status'  => 'error',
-                'error'   => true,
+                'status' => 'error',
+                'error' => true,
                 'message' => array_values($validator->errors())[0] ?? 'Email invalide',
             ]);
         }
@@ -50,8 +50,8 @@ final class NewsletterController
         $email = (string) $input['email'];
         if ($this->repo->existsByEmail($email)) {
             return Response::json([
-                'status'  => 'error',
-                'error'   => true,
+                'status' => 'error',
+                'error' => true,
                 'message' => 'Vous êtes déjà inscrit',
             ]);
         }
@@ -62,8 +62,8 @@ final class NewsletterController
             $this->logger->error('Newsletter insert failed', ['exception' => $e->getMessage()]);
 
             return Response::json([
-                'status'  => 'error',
-                'error'   => true,
+                'status' => 'error',
+                'error' => true,
                 'message' => "Erreur d'inscription",
             ]);
         }
@@ -71,8 +71,8 @@ final class NewsletterController
         $this->safeConfirm($email);
 
         return Response::json([
-            'status'  => 'ok',
-            'error'   => false,
+            'status' => 'ok',
+            'error' => false,
             'message' => 'Inscription prise en compte',
         ]);
     }
@@ -81,8 +81,8 @@ final class NewsletterController
     {
         try {
             $body = "Bonjour,\n\nVotre inscription à la newsletter a bien été prise en compte.\n"
-                . "Vous serez prévenu à chaque nouvelle news.\n\n"
-                . "À très vite !\nAudrey et Ludovic\ncontact@lovelywedding.fr";
+                ."Vous serez prévenu à chaque nouvelle news.\n\n"
+                ."À très vite !\nAudrey et Ludovic\ncontact@lovelywedding.fr";
             $this->mailer->send($this->newsletterFrom, $email, '[Lovelywedding] Inscription à la newsletter', $body);
         } catch (\Throwable $e) {
             $this->logger->error('Newsletter confirmation mail failed', ['exception' => $e->getMessage()]);

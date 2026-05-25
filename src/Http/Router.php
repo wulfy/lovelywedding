@@ -31,7 +31,7 @@ final class Router
                 return $this->routes[$alt];
             }
         } else {
-            $alt = $path . '.php';
+            $alt = $path.'.php';
             if (isset($this->routes[$alt])) {
                 return $this->routes[$alt];
             }
@@ -42,14 +42,14 @@ final class Router
 
     private function normalize(string $path): string
     {
-        if ($path === '') {
+        if ('' === $path) {
             return '/';
         }
-        if ($path !== '/' && str_ends_with($path, '/')) {
+        if ('/' !== $path && str_ends_with($path, '/')) {
             $path = rtrim($path, '/');
         }
         if (!str_starts_with($path, '/')) {
-            $path = '/' . $path;
+            $path = '/'.$path;
         }
 
         return $path;

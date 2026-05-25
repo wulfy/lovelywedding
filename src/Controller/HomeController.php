@@ -11,7 +11,7 @@ final class HomeController
 {
     public function index(Request $request): Response
     {
-        $indexHtml = dirname(__DIR__, 2) . '/public/index.html';
+        $indexHtml = dirname(__DIR__, 2).'/public/index.html';
         if (is_file($indexHtml)) {
             return Response::html((string) file_get_contents($indexHtml));
         }
