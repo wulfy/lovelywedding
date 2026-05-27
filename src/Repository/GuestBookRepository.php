@@ -61,6 +61,7 @@ final class GuestBookRepository
      * rows (plain UTF-8 text has no entities and no embedded <br /> tags).
      *
      * @param array<string, mixed> $row
+     *
      * @return array<string, mixed>
      */
     private function normalizeLegacyRow(array $row): array
