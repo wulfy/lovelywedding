@@ -89,7 +89,12 @@ final class GuestBookRepository
             $decoded = $next;
         }
 
-        return (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
+        $withNewlines = (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
+
+        // Legacy authors typed double <br><br> for "paragraph break", which
+        // doubles up after |nl2br runs in the template. Pair-wise collapse
+        // halves runs of 2+ adjacent newlines (2→1, 3→2, 4→2, 5→3, ...).
+        return (string) preg_replace('/\n[ \t]*\n/', "\n", $withNewlines);
     }
 
     public function existsByIp(string $ip): bool
