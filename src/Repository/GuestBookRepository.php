@@ -26,6 +26,10 @@ final class GuestBookRepository
         /** @var array<int, array<string, mixed>> $rows */
         $rows = $stmt->fetchAll();
 
+        foreach ($rows as $i => $row) {
+            $rows[$i] = $this->normalizeLegacyRow($row);
+        }
+
         return $rows;
     }
 
@@ -44,7 +48,37 @@ final class GuestBookRepository
         /** @var array<string, mixed>|false $row */
         $row = $stmt->fetch();
 
-        return false === $row ? null : $row;
+        return false === $row ? null : $this->normalizeLegacyRow($row);
+    }
+
+    /**
+     * Legacy rows were inserted by the original PHP app, which ran htmlentities()
+     * on every text field and used literal <br /> tags for line breaks. The modern
+     * Smarty templates re-escape on output (escape_html=true) and apply |nl2br on
+     * \n, so without normalization users see "&rsquo;" and "<br />" as raw text.
+     *
+     * Decoding entities and converting <br /> back to \n is idempotent for new
+     * rows (plain UTF-8 text has no entities and no embedded <br /> tags).
+     *
+     * @param array<string, mixed> $row
+     * @return array<string, mixed>
+     */
+    private function normalizeLegacyRow(array $row): array
+    {
+        foreach (['nom', 'email', 'ville', 'message'] as $field) {
+            if (isset($row[$field]) && is_string($row[$field])) {
+                $row[$field] = $this->normalizeLegacyText($row[$field]);
+            }
+        }
+
+        return $row;
+    }
+
+    private function normalizeLegacyText(string $text): string
+    {
+        $decoded = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        return (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
     }
 
     public function existsByIp(string $ip): bool
