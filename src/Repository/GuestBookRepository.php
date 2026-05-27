@@ -77,7 +77,17 @@ final class GuestBookRepository
 
     private function normalizeLegacyText(string $text): string
     {
-        $decoded = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // Some rows were re-encoded by a botched UTF-8 migration, so they
+        // contain &amp;lt;br /&amp;gt; that requires two decode passes.
+        // Loop until stable, capped at 5 iterations to avoid runaway input.
+        $decoded = $text;
+        for ($i = 0; $i < 5; ++$i) {
+            $next = html_entity_decode($decoded, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            if ($next === $decoded) {
+                break;
+            }
+            $decoded = $next;
+        }
 
         return (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
     }
