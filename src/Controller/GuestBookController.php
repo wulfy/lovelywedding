@@ -56,9 +56,14 @@ final class GuestBookController
         }
         unset($page);
 
-        return Response::html($this->renderer->render('guestbook/read.tpl', [
+        $body = $this->renderer->render('guestbook/read.tpl', [
             'pages' => $pages,
-        ]));
+        ]);
+
+        // Temporary deploy marker — remove after confirming Coolify ships latest code.
+        $body .= "\n<!-- deploy-marker:ead7a84-normalizer -->\n";
+
+        return Response::html($body);
     }
 
     public function write(Request $request): Response
