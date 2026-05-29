@@ -19,7 +19,7 @@ final class GuestBookRepository
     {
         $stmt = $this->db->pdo()->prepare(
             'SELECT id, nom, email, ville, date, message, image, ip
-             FROM livre_dor WHERE actif = 1 ORDER BY date DESC, id DESC'
+             FROM livre_dor WHERE actif = 1 ORDER BY date ASC, id ASC'
         );
         $stmt->execute();
 
