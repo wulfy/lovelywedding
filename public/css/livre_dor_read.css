@@ -98,12 +98,3 @@ text-align:center;
     position: absolute;
     right: 0;
 }
-
-/* Long messages overflowed the fixed-height .page (500px). Cap the message
-   height inside the booklet and let it scroll vertically when content
-   exceeds the available space. */
-#mybook .page .message {
-    max-height: 460px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
