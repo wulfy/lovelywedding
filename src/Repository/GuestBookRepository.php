@@ -91,6 +91,11 @@ final class GuestBookRepository
 
         $withNewlines = (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
 
+        // Legacy rows mix literal <br /> with real CR/LF, so a single break was
+        // often stored as "<br />\r\n". Fold every line-ending variant to \n
+        // first, otherwise a stray \r splits the run and survives the collapse.
+        $withNewlines = (string) preg_replace('/\r\n?/', "\n", $withNewlines);
+
         // A <br /> is just a line return, not a paragraph break, so any run of
         // adjacent newlines (legacy authors often typed <br><br>) collapses to
         // a single \n. |nl2br then renders exactly one line return, with no
