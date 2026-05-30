@@ -91,7 +91,7 @@ final class GuestBookRepository
 
         // Normalize every line-ending variant to \n first so a stray \r never
         // splits a break apart.
-        $withNewlines = (string) preg_replace('/\r\n?/', "\n", $decoded);
+        $withNewlines = (string) preg_replace('/\R/', "", $decoded);
 
         // Legacy rows stored a single break as "<br />\r\n", so each <br /> may
         // be trailed by formatting whitespace and one newline that belong to the
@@ -99,11 +99,7 @@ final class GuestBookRepository
         // into a single \n. Two consecutive <br /> therefore become \n\n, which
         // preserves the distinction: one <br /> is a line return, two are a
         // paragraph break (a blank line).
-        $withNewlines = (string) preg_replace('#<br\s*/?>[ \t]*\n?#i', "\n", $withNewlines);
-
-        // Cap any run of blank lines at a single one so legacy spam of many
-        // <br /> can't open a huge gap.
-        return (string) preg_replace('/\n{3,}/', "\n\n", $withNewlines);
+        return (string) preg_replace('#<br\s*/?>#i', "\n", $withNewlines);
     }
 
     public function existsByIp(string $ip): bool
