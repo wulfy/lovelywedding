@@ -89,18 +89,21 @@ final class GuestBookRepository
             $decoded = $next;
         }
 
-        $withNewlines = (string) preg_replace('#<br\s*/?>#i', "\n", $decoded);
+        // Normalize every line-ending variant to \n first so a stray \r never
+        // splits a break apart.
+        $withNewlines = (string) preg_replace('/\r\n?/', "\n", $decoded);
 
-        // Legacy rows mix literal <br /> with real CR/LF, so a single break was
-        // often stored as "<br />\r\n". Fold every line-ending variant to \n
-        // first, otherwise a stray \r splits the run and survives the collapse.
-        $withNewlines = (string) preg_replace('/\r\n?/', "\n", $withNewlines);
+        // Legacy rows stored a single break as "<br />\r\n", so each <br /> may
+        // be trailed by formatting whitespace and one newline that belong to the
+        // same break. Fold each <br /> (plus that trailing whitespace/newline)
+        // into a single \n. Two consecutive <br /> therefore become \n\n, which
+        // preserves the distinction: one <br /> is a line return, two are a
+        // paragraph break (a blank line).
+        $withNewlines = (string) preg_replace('#<br\s*/?>[ \t]*\n?#i', "\n", $withNewlines);
 
-        // A <br /> is just a line return, not a paragraph break, so any run of
-        // adjacent newlines (legacy authors often typed <br><br>) collapses to
-        // a single \n. |nl2br then renders exactly one line return, with no
-        // empty line in between.
-        return (string) preg_replace('/(\n[ \t]*){2,}/', "\n", $withNewlines);
+        // Cap any run of blank lines at a single one so legacy spam of many
+        // <br /> can't open a huge gap.
+        return (string) preg_replace('/\n{3,}/', "\n\n", $withNewlines);
     }
 
     public function existsByIp(string $ip): bool
