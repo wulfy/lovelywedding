@@ -93,17 +93,17 @@ function my_slider(sliderId,options) {
 		if(isScrolledIntoView(this.slidecontainer))
 		{
 			this.animout(this.currentSlide);
-			// Si l'image active courante n'est pas la dernière image de la liste
+			// Si l'image active courante n'est pas la derniÃ¨re image de la liste
 			if(!this.currentSlide.is(this.slides.last()))
 			{		
 			   //this.currentSlide = $(this.currentSlide.parentNode).find(".active");
 				this.currentSlide = this.currentSlide.next();		
 			}
-			// L'image est la dernière de la liste
+			// L'image est la derniÃ¨re de la liste
 			else
 			{
 				this.currentSlide = this.slides.first();
-				// On fait la même chose mais en prenant la première image de la liste via le sélecteur "first-child"
+				// On fait la mÃªme chose mais en prenant la premiÃ¨re image de la liste via le sÃ©lecteur "first-child"
 			}
 			this.animin(this.currentSlide);
 		}

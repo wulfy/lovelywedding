@@ -13,12 +13,12 @@ final class GuestBookValidatorTest extends TestCase
     {
         $v = new GuestBookValidator();
         self::assertTrue($v->validate([
-            'nom'     => 'Audrey',
-            'prenom'  => '',
-            'email'   => 'audrey@example.com',
-            'ville'   => 'Lyon',
+            'nom' => 'Audrey',
+            'prenom' => '',
+            'email' => 'audrey@example.com',
+            'ville' => 'Lyon',
             'message' => 'Bravo aux mariés !',
-            'image'   => '',
+            'image' => '',
         ]));
         self::assertSame([], $v->errors());
     }
@@ -27,12 +27,12 @@ final class GuestBookValidatorTest extends TestCase
     {
         $v = new GuestBookValidator();
         self::assertFalse($v->validate([
-            'nom'     => 'Audrey',
-            'prenom'  => 'spam',
-            'email'   => 'audrey@example.com',
-            'ville'   => 'Lyon',
+            'nom' => 'Audrey',
+            'prenom' => 'spam',
+            'email' => 'audrey@example.com',
+            'ville' => 'Lyon',
             'message' => 'Hello',
-            'image'   => '',
+            'image' => '',
         ]));
         self::assertArrayHasKey('prenom', $v->errors());
     }
@@ -41,12 +41,12 @@ final class GuestBookValidatorTest extends TestCase
     {
         $v = new GuestBookValidator();
         self::assertFalse($v->validate([
-            'nom'     => '',
-            'prenom'  => '',
-            'email'   => '',
-            'ville'   => '',
+            'nom' => '',
+            'prenom' => '',
+            'email' => '',
+            'ville' => '',
             'message' => '',
-            'image'   => '',
+            'image' => '',
         ]));
         $errs = $v->errors();
         self::assertArrayHasKey('nom', $errs);
@@ -61,12 +61,12 @@ final class GuestBookValidatorTest extends TestCase
         // uses egulias/email-validator and must reject malformed emails.
         $v = new GuestBookValidator();
         self::assertFalse($v->validate([
-            'nom'     => 'X',
-            'prenom'  => '',
-            'email'   => 'not-an-email',
-            'ville'   => 'Lyon',
+            'nom' => 'X',
+            'prenom' => '',
+            'email' => 'not-an-email',
+            'ville' => 'Lyon',
             'message' => 'hi',
-            'image'   => '',
+            'image' => '',
         ]));
         self::assertArrayHasKey('email', $v->errors());
     }
@@ -75,12 +75,12 @@ final class GuestBookValidatorTest extends TestCase
     {
         $v = new GuestBookValidator();
         self::assertFalse($v->validate([
-            'nom'     => 'Audrey',
-            'prenom'  => '',
-            'email'   => 'a@b.fr',
-            'ville'   => 'Lyon',
+            'nom' => 'Audrey',
+            'prenom' => '',
+            'email' => 'a@b.fr',
+            'ville' => 'Lyon',
             'message' => 'hi',
-            'image'   => 'javascript:alert(1)',
+            'image' => 'javascript:alert(1)',
         ]));
         self::assertArrayHasKey('image', $v->errors());
     }
@@ -89,12 +89,12 @@ final class GuestBookValidatorTest extends TestCase
     {
         $v = new GuestBookValidator();
         self::assertFalse($v->validate([
-            'nom'     => str_repeat('a', 101),
-            'prenom'  => '',
-            'email'   => 'a@b.fr',
-            'ville'   => 'Lyon',
+            'nom' => str_repeat('a', 101),
+            'prenom' => '',
+            'email' => 'a@b.fr',
+            'ville' => 'Lyon',
             'message' => 'hi',
-            'image'   => '',
+            'image' => '',
         ]));
         self::assertArrayHasKey('nom', $v->errors());
     }

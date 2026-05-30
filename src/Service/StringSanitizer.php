@@ -44,6 +44,6 @@ final class StringSanitizer
             return $value;
         }
 
-        return mb_substr($value, 0, $maxLength, 'UTF-8') . $suffix;
+        return mb_substr($value, 0, $maxLength, 'UTF-8').$suffix;
     }
 }

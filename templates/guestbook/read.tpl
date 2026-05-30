@@ -87,18 +87,18 @@
                                 <h3>{$page.nom|upper|truncate:20}</h3>
                                 <span class='date'>{$page.date|date_format:"%d-%m-%Y"}</span>
                                 <div class='message'>
-                                    <span class='firstLetter'>{$page1|substr:0:1}</span>{$page1|substr:1|nl2br}
+                                    <span class='firstLetter'>{$page1|substr:0:1}</span>{$page1|substr:1|escape:'html'|nl2br nofilter}
                                 </div>
                             </div>
                             {if strlen($page2)>2}
                                 <div class='page'>
                                     <div class='message'>
-                                        {$page2|substr:0:800|nl2br}
+                                        {$page2|substr:0:800|escape:'html'|nl2br nofilter}
                                     </div>
                                 </div>
                                 <div class='page'>
                                     <div class='message'>
-                                        {$page2|substr:800:500|nl2br} ...
+                                        {$page2|substr:800:500|escape:'html'|nl2br nofilter} ...
                                     </div>
                                 </div>
                                 {assign var="nbpages" value=($nbpages+2)}

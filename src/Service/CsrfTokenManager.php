@@ -6,7 +6,7 @@ namespace LovelyWedding\Service;
 
 final class CsrfTokenManager
 {
-    private const string SESSION_KEY = '_csrf_tokens';
+    private const SESSION_KEY = '_csrf_tokens';
 
     public function token(string $intent = 'default'): string
     {
@@ -20,7 +20,7 @@ final class CsrfTokenManager
 
     public function isValid(string $intent, ?string $token): bool
     {
-        if ($token === null || $token === '') {
+        if (null === $token || '' === $token) {
             return false;
         }
         $this->ensureSession();
@@ -34,7 +34,7 @@ final class CsrfTokenManager
 
     private function ensureSession(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (PHP_SESSION_NONE === session_status()) {
             session_start();
         }
         if (!isset($_SESSION[self::SESSION_KEY]) || !is_array($_SESSION[self::SESSION_KEY])) {

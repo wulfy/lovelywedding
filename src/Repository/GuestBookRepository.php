@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LovelyWedding\Repository;
 
 use LovelyWedding\Service\Database;
-use PDO;
 
 final class GuestBookRepository
 {
@@ -20,12 +19,16 @@ final class GuestBookRepository
     {
         $stmt = $this->db->pdo()->prepare(
             'SELECT id, nom, email, ville, date, message, image, ip
-             FROM livre_dor WHERE actif = 1 ORDER BY date DESC, id DESC'
+             FROM livre_dor WHERE actif = 1 ORDER BY date ASC, id ASC'
         );
         $stmt->execute();
 
         /** @var array<int, array<string, mixed>> $rows */
         $rows = $stmt->fetchAll();
+
+        foreach ($rows as $i => $row) {
+            $rows[$i] = $this->normalizeLegacyRow($row);
+        }
 
         return $rows;
     }
@@ -39,13 +42,64 @@ final class GuestBookRepository
             'SELECT id, nom, email, ville, date, message, image, ip
              FROM livre_dor WHERE id = :id AND ip = :ip LIMIT 1'
         );
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-        $stmt->bindValue(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':ip', $ip, \PDO::PARAM_STR);
         $stmt->execute();
         /** @var array<string, mixed>|false $row */
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return false === $row ? null : $this->normalizeLegacyRow($row);
+    }
+
+    /**
+     * Legacy rows were inserted by the original PHP app, which ran htmlentities()
+     * on every text field and used literal <br /> tags for line breaks. The modern
+     * Smarty templates re-escape on output (escape_html=true) and apply |nl2br on
+     * \n, so without normalization users see "&rsquo;" and "<br />" as raw text.
+     *
+     * Decoding entities and converting <br /> back to \n is idempotent for new
+     * rows (plain UTF-8 text has no entities and no embedded <br /> tags).
+     *
+     * @param array<string, mixed> $row
+     *
+     * @return array<string, mixed>
+     */
+    private function normalizeLegacyRow(array $row): array
+    {
+        foreach (['nom', 'email', 'ville', 'message'] as $field) {
+            if (isset($row[$field]) && is_string($row[$field])) {
+                $row[$field] = $this->normalizeLegacyText($row[$field]);
+            }
+        }
+
+        return $row;
+    }
+
+    private function normalizeLegacyText(string $text): string
+    {
+        // Some rows were re-encoded by a botched UTF-8 migration, so they
+        // contain &amp;lt;br /&amp;gt; that requires two decode passes.
+        // Loop until stable, capped at 5 iterations to avoid runaway input.
+        $decoded = $text;
+        for ($i = 0; $i < 5; ++$i) {
+            $next = html_entity_decode($decoded, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            if ($next === $decoded) {
+                break;
+            }
+            $decoded = $next;
+        }
+
+        // Normalize every line-ending variant to \n first so a stray \r never
+        // splits a break apart.
+        $withNewlines = (string) preg_replace('/\R/', "", $decoded);
+
+        // Legacy rows stored a single break as "<br />\r\n", so each <br /> may
+        // be trailed by formatting whitespace and one newline that belong to the
+        // same break. Fold each <br /> (plus that trailing whitespace/newline)
+        // into a single \n. Two consecutive <br /> therefore become \n\n, which
+        // preserves the distinction: one <br /> is a line return, two are a
+        // paragraph break (a blank line).
+        return (string) preg_replace('#<br\s*/?>#i', "\n", $withNewlines);
     }
 
     public function existsByIp(string $ip): bool
@@ -53,10 +107,10 @@ final class GuestBookRepository
         $stmt = $this->db->pdo()->prepare(
             'SELECT 1 FROM livre_dor WHERE ip = :ip AND actif = 1 LIMIT 1'
         );
-        $stmt->bindValue(':ip', $ip, PDO::PARAM_STR);
+        $stmt->bindValue(':ip', $ip, \PDO::PARAM_STR);
         $stmt->execute();
 
-        return $stmt->fetchColumn() !== false;
+        return false !== $stmt->fetchColumn();
     }
 
     /**
@@ -95,7 +149,7 @@ final class GuestBookRepository
         $stmt->bindValue(':ville', $data['ville']);
         $stmt->bindValue(':message', $data['message']);
         $stmt->bindValue(':image', $data['image']);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->bindValue(':ip', $data['ip']);
         $stmt->execute();
     }

@@ -23,12 +23,12 @@ final class RemoteImageInspectorTest extends TestCase
     public static function privateIpProvider(): array
     {
         return [
-            'loopback ipv4'      => ['127.0.0.1'],
-            'rfc1918 10/8'       => ['10.0.0.1'],
+            'loopback ipv4' => ['127.0.0.1'],
+            'rfc1918 10/8' => ['10.0.0.1'],
             'rfc1918 192.168/16' => ['192.168.1.1'],
-            'rfc1918 172.16/12'  => ['172.16.0.5'],
-            'link local'         => ['169.254.169.254'],
-            'ipv6 loopback'      => ['::1'],
+            'rfc1918 172.16/12' => ['172.16.0.5'],
+            'link local' => ['169.254.169.254'],
+            'ipv6 loopback' => ['::1'],
         ];
     }
 

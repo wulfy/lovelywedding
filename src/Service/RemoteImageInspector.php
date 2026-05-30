@@ -6,9 +6,9 @@ namespace LovelyWedding\Service;
 
 final class RemoteImageInspector
 {
-    private const int CONNECT_TIMEOUT = 5;
-    private const int TIMEOUT = 10;
-    private const int MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+    private const CONNECT_TIMEOUT = 5;
+    private const TIMEOUT = 10;
+    private const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
     /**
      * Returns ['status' => int, 'length' => int, 'content_type' => string] or null on failure / SSRF block.
@@ -32,21 +32,21 @@ final class RemoteImageInspector
         }
 
         $ch = curl_init($url);
-        if ($ch === false) {
+        if (false === $ch) {
             return null;
         }
         curl_setopt_array($ch, [
-            CURLOPT_NOBODY         => true,
+            CURLOPT_NOBODY => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER         => true,
+            CURLOPT_HEADER => true,
             CURLOPT_FOLLOWLOCATION => false, // re-validated below if we need to follow
             CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT,
-            CURLOPT_TIMEOUT        => self::TIMEOUT,
-            CURLOPT_PROTOCOLS      => CURLPROTO_HTTP | CURLPROTO_HTTPS,
+            CURLOPT_TIMEOUT => self::TIMEOUT,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
         ]);
 
         $data = curl_exec($ch);
-        if ($data === false) {
+        if (false === $data) {
             curl_close($ch);
 
             return null;
@@ -58,15 +58,15 @@ final class RemoteImageInspector
 
         if ($length > self::MAX_BYTES) {
             return [
-                'status'       => $status,
-                'length'       => $length,
+                'status' => $status,
+                'length' => $length,
                 'content_type' => $contentType,
             ];
         }
 
         return [
-            'status'       => $status,
-            'length'       => $length,
+            'status' => $status,
+            'length' => $length,
             'content_type' => $contentType,
         ];
     }
@@ -74,8 +74,8 @@ final class RemoteImageInspector
     public function isPublicHost(string $host): bool
     {
         // Strip IPv6 brackets
-        $host = trim($host, "[]");
-        if ($host === '') {
+        $host = trim($host, '[]');
+        if ('' === $host) {
             return false;
         }
 
@@ -95,7 +95,7 @@ final class RemoteImageInspector
             }
         }
 
-        if ($ips === []) {
+        if ([] === $ips) {
             return false;
         }
 

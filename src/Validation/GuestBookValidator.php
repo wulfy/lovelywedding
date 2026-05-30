@@ -13,7 +13,7 @@ final class GuestBookValidator extends Validator
     {
         // Honeypot: legacy form has a visible-but-bot-bait field `prenom` that must remain empty.
         $honeypot = $input['prenom'] ?? '';
-        if ($honeypot !== null && trim($honeypot) !== '') {
+        if (null !== $honeypot && '' !== trim($honeypot)) {
             $this->errors['prenom'] = 'BOT DETECTE!';
 
             return false;
@@ -33,7 +33,7 @@ final class GuestBookValidator extends Validator
         $this->maxLength('message', $input['message'] ?? null, 5000, 'Message trop long');
 
         $image = $input['image'] ?? null;
-        if ($image !== null && trim($image) !== '') {
+        if (null !== $image && '' !== trim($image)) {
             $this->url('image', $image, "L'URL de l'image n'est pas valide");
         }
 

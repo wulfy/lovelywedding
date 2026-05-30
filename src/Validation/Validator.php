@@ -14,7 +14,7 @@ abstract class Validator
 
     protected function required(string $field, ?string $value, string $message): bool
     {
-        if ($value === null || trim($value) === '') {
+        if (null === $value || '' === trim($value)) {
             $this->errors[$field] = $message;
 
             return false;
@@ -25,7 +25,7 @@ abstract class Validator
 
     protected function maxLength(string $field, ?string $value, int $max, string $message): bool
     {
-        if ($value !== null && mb_strlen($value, 'UTF-8') > $max) {
+        if (null !== $value && mb_strlen($value, 'UTF-8') > $max) {
             $this->errors[$field] = $message;
 
             return false;
@@ -36,7 +36,7 @@ abstract class Validator
 
     protected function email(string $field, ?string $value, string $message): bool
     {
-        if ($value === null || $value === '') {
+        if (null === $value || '' === $value) {
             return true;
         }
         $validator = new EmailValidator();
@@ -51,10 +51,10 @@ abstract class Validator
 
     protected function url(string $field, ?string $value, string $message): bool
     {
-        if ($value === null || $value === '') {
+        if (null === $value || '' === $value) {
             return true;
         }
-        if (filter_var($value, FILTER_VALIDATE_URL) === false) {
+        if (false === filter_var($value, FILTER_VALIDATE_URL)) {
             $this->errors[$field] = $message;
 
             return false;
@@ -79,6 +79,6 @@ abstract class Validator
 
     public function isValid(): bool
     {
-        return $this->errors === [];
+        return [] === $this->errors;
     }
 }

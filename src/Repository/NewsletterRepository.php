@@ -18,7 +18,7 @@ final class NewsletterRepository
         $stmt->bindValue(':email', $email);
         $stmt->execute();
 
-        return $stmt->fetchColumn() !== false;
+        return false !== $stmt->fetchColumn();
     }
 
     public function insert(string $email, string $ip): void
@@ -37,7 +37,7 @@ final class NewsletterRepository
     public function findAllActive(): array
     {
         $stmt = $this->db->pdo()->query('SELECT email FROM newsletter WHERE actif = 1 ORDER BY id ASC');
-        if ($stmt === false) {
+        if (false === $stmt) {
             return [];
         }
         /** @var array<int, string> $emails */

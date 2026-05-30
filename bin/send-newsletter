@@ -11,9 +11,9 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 $projectDir = dirname(__DIR__);
-require $projectDir . '/vendor/autoload.php';
+require $projectDir.'/vendor/autoload.php';
 
-if (is_file($projectDir . '/.env')) {
+if (is_file($projectDir.'/.env')) {
     Dotenv::createImmutable($projectDir)->safeLoad();
 }
 
@@ -33,7 +33,7 @@ $body = (string) file_get_contents($templateFile);
 
 $logger = new Logger('newsletter');
 $logger->pushHandler(new StreamHandler('php://stdout'));
-$logger->pushHandler(new StreamHandler($projectDir . '/var/log/newsletter.log'));
+$logger->pushHandler(new StreamHandler($projectDir.'/var/log/newsletter.log'));
 
 $database = new Database(
     host: (string) ($_ENV['DB_HOST'] ?? 'localhost'),
@@ -54,16 +54,16 @@ $failed = 0;
 foreach ($emails as $email) {
     if ($dryRun) {
         $logger->info(sprintf('[DRY-RUN] %s', $email));
-        $sent++;
+        ++$sent;
         continue;
     }
     try {
         $mailer->send($from, $email, $subject, $body, true);
         $logger->info(sprintf('Envoyé à %s', $email));
-        $sent++;
-    } catch (\Throwable $e) {
+        ++$sent;
+    } catch (Throwable $e) {
         $logger->error(sprintf('Échec %s: %s', $email, $e->getMessage()));
-        $failed++;
+        ++$failed;
     }
     // throttle to avoid being flagged as spam by the SMTP relay
     usleep(250_000);

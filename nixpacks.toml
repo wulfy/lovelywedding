@@ -1,0 +1,18 @@
+[variables]
+# Nginx docroot points at our public/ folder so .env, src/, vendor/, etc.
+# stay outside the web tree.
+NIXPACKS_PHP_ROOT_DIR = "public"
+# Front controller pattern: any unmatched URL falls back to index.php,
+# which dispatches to the LovelyWedding\Http\Router.
+NIXPACKS_PHP_FALLBACK_PATH = "/index.php"
+
+# PHP-FPM runs as a non-root user that cannot write to the root-owned
+# /app tree by default. Smarty needs to write compiled templates to
+# var/cache/smarty and Monolog writes to var/log, so make the whole
+# var/ subtree world-writable at build time.
+[phases.runtime-dirs]
+dependsOn = ["build"]
+cmds = [
+  "mkdir -p var/cache/smarty var/log",
+  "chmod -R 0777 var",
+]
